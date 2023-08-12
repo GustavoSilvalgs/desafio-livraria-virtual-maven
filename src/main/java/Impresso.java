@@ -37,7 +37,15 @@ public class Impresso extends Livro {
 
     @Override
     public String toString() {
-        return "Frete: " + frete + "\nEstoque=" + estoque;
+        return "Livro Impresso {" +
+                "Id: " + super.getId() +
+                ", Titulo: '" + super.getTitulo() + '\'' +
+                ", Autores: '" + super.getAutores() + '\'' +
+                ", Editora: '" + super.getEditora() + '\'' +
+                ", Preco: " + super.getPreco() + '\'' +
+                ", Frete: " + this.frete + '\'' +
+                ", Estoque: " + this.estoque+
+                '}';
     }
 }
 

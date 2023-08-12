@@ -189,7 +189,7 @@ public class LivrariaVirtual {
     }
 
     public void listarVendas() {
-
+        for (var venda : vendas) {System.out.println(venda.toString());}
     }
 
     public static void main(String[] args) {
