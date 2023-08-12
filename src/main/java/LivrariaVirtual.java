@@ -204,6 +204,16 @@ public class LivrariaVirtual {
 
     public void listarLivrosImpressos() {
 
+
+        if (impressos.isEmpty()){
+            System.out.println("Não há livros impressos ");
+        }
+        else {
+            for (var impresso : impressos){
+                System.out.println(impresso.toString());
+            }
+        }
+
     }
 
     public void listarLivrosEletronicos() {
@@ -220,19 +230,20 @@ public class LivrariaVirtual {
 
     public void listarLivros() {
         var livros = new ArrayList<Livro>();
-        for (var livroImpresso : impressos) {
-            livros.add(livroImpresso);
+
+        livros.addAll(impressos);
+        livros.addAll(eletronicos);
+
+        if(!livros.isEmpty()){
+            livros.sort(Comparator.comparing(Livro::getId));
+            for (var livro: livros) { System.out.println(livro.toString()); }
+        }else {
+            System.out.println("Não há livros cadastrados!");
         }
-        for (var livroEletronico :
-                eletronicos) {
-            livros.add(livroEletronico);
-        }
-        Collections.sort(livros, Comparator.comparing(Livro::getId));
-        for (var livro: livros) { System.out.println(livro.toString()); }
     }
 
     public void listarVendas() {
-
+        for (var venda : vendas) {System.out.println(venda.toString());}
     }
 
     public static void main(String[] args) {

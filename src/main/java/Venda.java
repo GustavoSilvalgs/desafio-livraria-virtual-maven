@@ -58,16 +58,24 @@ public class Venda {
         this.valor = valor;
     }
 
-    public void addLivro (Livro l, int index){
-        livros.add(index, l);
-        valor += l.getPreco();
+    public void addLivro (Livro livro, int index){
+        this.livros.add(index, livro);
+        this.valor += livro.getPreco();
     }
 
     public void listarLivros() {
         System.out.println("Livros da venda " + numero + ":");
-        for (int i = 0; i < livros.size(); i++) {
-            System.out.println((i + 1) + ". " + livros.get(i).getTitulo());
-        }
+        for (var livro : this.livros) { System.out.println(livro.toString()); }
+    }
+
+    @Override
+    public String toString() {
+        return "Venda{" +
+                "id: " + id +
+                ", Numero: " + numero +
+                ", Cliente: '" + cliente + '\'' +
+                ", Valor: " + valor +
+                ", Livros: " + livros +
+                '}';
     }
 }
-
