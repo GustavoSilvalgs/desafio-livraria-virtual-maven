@@ -169,6 +169,16 @@ public class LivrariaVirtual {
 
     public void listarLivrosImpressos() {
 
+
+        if (impressos.isEmpty()){
+            System.out.println("Não há livros impressos ");
+        }
+        else {
+            for (var impresso : impressos){
+                System.out.println(impresso.toString());
+            }
+        }
+
     }
 
     public void listarLivrosEletronicos() {
