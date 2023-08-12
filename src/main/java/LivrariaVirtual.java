@@ -219,6 +219,10 @@ public class LivrariaVirtual {
 
     public void listarLivrosEletronicos() {
 
+        String hql  = "SELECT li FROM Eletronico li";
+        Query query = em.createQuery(hql, Eletronico.class);
+        eletronicos = query.getResultList();
+
         if (eletronicos.isEmpty()) {
             System.out.println("Não há livros eletrônicos");
         }
