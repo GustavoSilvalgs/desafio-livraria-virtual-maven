@@ -178,12 +178,15 @@ public class LivrariaVirtual {
     public void listarLivros() {
         var livros = new ArrayList<Livro>();
 
-        for (var livroImpresso : impressos) { livros.add(livroImpresso); }
-        for (var livroEletronico : eletronicos) { livros.add(livroEletronico); }
+        livros.addAll(impressos);
+        livros.addAll(eletronicos);
 
-        Collections.sort(livros, Comparator.comparing(Livro::getId));
-
-        for (var livro: livros) { System.out.println(livro.toString()); }
+        if(!livros.isEmpty()){
+            livros.sort(Comparator.comparing(Livro::getId));
+            for (var livro: livros) { System.out.println(livro.toString()); }
+        }else {
+            System.out.println("Não há livros cadastrados!");
+        }
     }
 
     public void listarVendas() {
