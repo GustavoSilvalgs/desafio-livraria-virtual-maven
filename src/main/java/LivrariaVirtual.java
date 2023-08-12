@@ -1,7 +1,4 @@
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.OneToMany;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.util.*;
 
 public class LivrariaVirtual {
@@ -204,6 +201,10 @@ public class LivrariaVirtual {
 
     public void listarLivrosImpressos() {
 
+
+        String hql  = "SELECT li FROM Impresso li";
+        Query query = em.createQuery(hql, Impresso.class);
+        impressos = query.getResultList();
 
         if (impressos.isEmpty()){
             System.out.println("Não há livros impressos ");
