@@ -1,4 +1,7 @@
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.OneToMany;
+import javax.persistence.Persistence;
 import java.util.*;
 
 public class LivrariaVirtual {
@@ -9,6 +12,7 @@ public class LivrariaVirtual {
     private int numImpressos;
     private int numEletronicos;
     private int numVendas;
+    private Scanner sc = new Scanner(System.in);
 
     @OneToMany
     private List<Impresso> impressos = new ArrayList<>();
@@ -88,9 +92,12 @@ public class LivrariaVirtual {
         this.vendas = vendas;
     }
 
+
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("livrariavirtual");
+    EntityManager em = emf.createEntityManager();
+
     public void cadastrarLivro() {
         Locale.setDefault(Locale.US);
-        Scanner sc = new Scanner(System.in);
 
         System.out.println("Informe o tipo de livro que deseja cadastrar: ");
         System.out.println("1 - Impresso");
@@ -125,6 +132,9 @@ public class LivrariaVirtual {
                 sc.nextLine();
 
                 Impresso impresso = new Impresso(titulo, autor, editor, preco, frete, estoque);
+                em.getTransaction().begin();
+                em.persist(impresso);
+                em.getTransaction().commit();
                 impressos.add(impresso);
                 numImpressos++;
                 System.out.println("Livro impresso (" + titulo + ") cadastrado com sucesso!\n");
@@ -150,8 +160,12 @@ public class LivrariaVirtual {
                 int estoque = sc.nextInt();
                 System.out.print("Digite o tamanho(KB): ");
                 int kb = sc.nextInt();
+                sc.nextLine();
 
                 Eletronico eletronico = new Eletronico(titulo, autor, editor, preco, kb);
+                em.getTransaction().begin();
+                em.persist(eletronico);
+                em.getTransaction().commit();
                 eletronicos.add(eletronico);
                 numEletronicos++;
 
@@ -164,6 +178,27 @@ public class LivrariaVirtual {
     }
 
     public void realizarVenda() {
+        System.out.print("Digite o nome do cliente: ");
+        String cliente = sc.nextLine();
+        System.out.print("Digite a quantidade de livros que deseja comprar: ");
+        int quantidadeLivros = sc.nextInt();
+
+        for (int i = 0; i < quantidadeLivros; i++) {
+            System.out.println((i + 1) + "º Livro");
+
+            System.out.println("Digite o tipo de livro: \n1 - Impresso\n2 - Eletrônico");
+            int tipoLivro = sc.nextInt();
+
+            if (tipoLivro == 1) {
+                listarLivrosImpressos();
+            }
+            else if (tipoLivro == 2) {
+                listarLivrosEletronicos();
+            }
+        }
+
+        System.out.print("Informe o id do livro escolhido: ");
+        int idLivro = sc.nextInt();
 
     }
 
@@ -173,6 +208,14 @@ public class LivrariaVirtual {
 
     public void listarLivrosEletronicos() {
 
+        if (eletronicos.isEmpty()) {
+            System.out.println("Não há livros eletrônicos");
+        }
+        else {
+            for (var eletronico : eletronicos) {
+                System.out.println(eletronico.toString());
+            }
+        }
     }
 
     public void listarLivros() {
