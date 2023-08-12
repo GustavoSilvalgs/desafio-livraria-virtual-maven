@@ -232,9 +232,7 @@ public class LivrariaVirtual {
     public void listarLivros() {
         var livros = new ArrayList<Livro>();
 
-        livros.addAll(impressos);
-        livros.addAll(eletronicos);
-
+        livros.addAll(em.createQuery("SELECT li FROM livros li", Livro.class).getResultList());
         if(!livros.isEmpty()){
             livros.sort(Comparator.comparing(Livro::getId));
             for (var livro: livros) { System.out.println(livro.toString()); }
@@ -251,6 +249,7 @@ public class LivrariaVirtual {
         Scanner sc = new Scanner(System.in);
 
         LivrariaVirtual livraria = new LivrariaVirtual();
+
 
         int op;
 
