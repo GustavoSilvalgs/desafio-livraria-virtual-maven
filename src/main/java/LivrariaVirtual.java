@@ -187,19 +187,17 @@ public class LivrariaVirtual {
 
     public void listarLivros() {
         var livros = new ArrayList<Livro>();
-        for (var livroImpresso : impressos) {
-            livros.add(livroImpresso);
-        }
-        for (var livroEletronico :
-                eletronicos) {
-            livros.add(livroEletronico);
-        }
+
+        for (var livroImpresso : impressos) { livros.add(livroImpresso); }
+        for (var livroEletronico : eletronicos) { livros.add(livroEletronico); }
+
         Collections.sort(livros, Comparator.comparing(Livro::getId));
+
         for (var livro: livros) { System.out.println(livro.toString()); }
     }
 
     public void listarVendas() {
-
+        for (var venda : vendas) {System.out.println(venda.toString());}
     }
 
     public static void main(String[] args) {
