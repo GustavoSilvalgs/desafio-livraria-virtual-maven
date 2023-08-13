@@ -67,7 +67,7 @@ public class Venda {
         return "\n#Venda#" +
                 "\nid: " + id +
                 "\nCliente: " + cliente +
-                "\nValor Total: " + valor +"\n"+
+                "\nValor: " + valor +"\n"+
                 "\nLivros: " + livros;
     }
 }
