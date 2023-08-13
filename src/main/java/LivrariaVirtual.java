@@ -21,12 +21,9 @@ public class LivrariaVirtual {
     private List<Venda> vendas = new ArrayList<>();
 
     public LivrariaVirtual() {
-    }
-
-    public LivrariaVirtual(int numImpressos, int numEletronicos, int numVendas) {
-        this.numImpressos = numImpressos;
-        this.numEletronicos = numEletronicos;
-        this.numVendas = numVendas;
+        numImpressos = em.createQuery("SELECT li FROM Impresso li", Impresso.class).getResultList().size();
+        numEletronicos = em.createQuery("SELECT li FROM Eletronico li", Eletronico.class).getResultList().size();
+        numVendas = em.createQuery("SELECT li FROM vendas li", Venda.class).getResultList().size();
     }
 
     public int getNumImpressos() {
@@ -93,6 +90,7 @@ public class LivrariaVirtual {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("livrariavirtual");
     EntityManager em = emf.createEntityManager();
 
+
     public void cadastrarLivro() {
         Locale.setDefault(Locale.US);
 
@@ -121,9 +119,9 @@ public class LivrariaVirtual {
                 System.out.print("Digite o editor(a) do livro: ");
                 String editor = sc.nextLine();
                 System.out.print("Digite o preco do livro: ");
-                float preco = sc.nextFloat();
+                float preco = Float.parseFloat(sc.next());
                 System.out.print("Digite o valor do frete: ");
-                float frete = sc.nextFloat();
+                float frete = Float.parseFloat(sc.next());
                 System.out.print("Digite a quantidade em estoque: ");
                 int estoque = sc.nextInt();
                 sc.nextLine();
@@ -150,11 +148,7 @@ public class LivrariaVirtual {
                 System.out.print("Digite o editor(a) do livro: ");
                 String editor = sc.nextLine();
                 System.out.print("Digite o preco do livro: ");
-                float preco = sc.nextFloat();
-                System.out.print("Digite o valor do frete: ");
-                float frete = sc.nextFloat();
-                System.out.print("Digite a quantidade em estoque: ");
-                int estoque = sc.nextInt();
+                float preco = Float.parseFloat(sc.next());
                 System.out.print("Digite o tamanho(KB): ");
                 int kb = sc.nextInt();
                 sc.nextLine();
@@ -180,23 +174,42 @@ public class LivrariaVirtual {
         System.out.print("Digite a quantidade de livros que deseja comprar: ");
         int quantidadeLivros = sc.nextInt();
 
+        var livroSelecionados= new ArrayList<Livro>();
+        int idLivroSelecionado;
         for (int i = 0; i < quantidadeLivros; i++) {
             System.out.println((i + 1) + "º Livro");
-
             System.out.println("Digite o tipo de livro: \n1 - Impresso\n2 - Eletrônico");
             int tipoLivro = sc.nextInt();
-
             if (tipoLivro == 1) {
                 listarLivrosImpressos();
             }
             else if (tipoLivro == 2) {
                 listarLivrosEletronicos();
             }
+            System.out.print("Informe o id do livro escolhido: ");
+            idLivroSelecionado = sc.nextInt();
+            livroSelecionados.add(retornaLivroPorId(idLivroSelecionado));
         }
+        var venda = new Venda(cliente,livroSelecionados);
 
-        System.out.print("Informe o id do livro escolhido: ");
-        int idLivro = sc.nextInt();
-
+        System.out.println(venda);
+        System.out.println("Confirmar venda? s/n");
+        var confirmarVenda = sc.next().toLowerCase();
+        if (confirmarVenda.equals("s")){
+            for (int i = 0; i < venda.getLivros().size(); i++) {
+                if (venda.getLivros().get(i) instanceof Impresso){
+                    ((Impresso) venda.getLivros().get(i)).setEstoque(
+                            ((Impresso) venda.getLivros().get(i)).getEstoque() - 1
+                    );
+                }
+            }
+            em.getTransaction().begin();
+            em.persist(venda);
+            em.getTransaction().commit();
+        }
+        else {
+            System.out.println("Venda Cancelada");
+        }
     }
 
     public void listarLivrosImpressos() {
@@ -246,7 +259,21 @@ public class LivrariaVirtual {
     }
 
     public void listarVendas() {
-        for (var venda : vendas) {System.out.println(venda.toString());}
+        var vendasRetornadas = new ArrayList<Venda>(em.createQuery("SELECT li FROM vendas li", Venda.class).getResultList());
+        if (vendasRetornadas.isEmpty()){
+            System.out.println("Não há vendas realizadas.");
+        }else {
+            for (var venda : vendasRetornadas) { System.out.println(venda.toString()); }
+        }
+    }
+
+    public Livro retornaLivroPorId(int id){
+        try{
+            return em.find(Livro.class, (long) id);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
     public static void main(String[] args) {
@@ -276,7 +303,21 @@ public class LivrariaVirtual {
                     livraria.realizarVenda();
                     break;
                 case 3:
-                    livraria.listarLivros();
+                    System.out.println(
+                            "Selecione dentre as opções abaixo:\n " +
+                                    "1. Listar Livros Impressos\n" +
+                                    "2. Listar Livros Eletronicos\n " +
+                                    "3. Listar todos os Livros");
+                    var opListar = sc.nextInt();
+                    if(opListar == 1){
+                        livraria.listarLivrosImpressos();
+                    } else if (opListar == 2) {
+                        livraria.listarLivrosEletronicos();
+                    } else if (opListar == 3) {
+                        livraria.listarLivros();
+                    }else {
+                        System.out.println("Opção inválida!");
+                    }
                     break;
                 case 4:
                     livraria.listarVendas();

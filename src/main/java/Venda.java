@@ -8,7 +8,6 @@ public class Venda {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private static int numVendas;
     private int numero;
     private String cliente;
     private float valor;
@@ -19,27 +18,18 @@ public class Venda {
     public Venda() {
     }
 
-    public Venda(int numero, String cliente, float valor, List<Livro> livros) {
-        this.numero = numero;
+    public Venda(String cliente, List<Livro> livros) {
         this.cliente = cliente;
-        this.valor = valor;
         this.livros = livros;
-    }
 
-    public int getNumVendas() {
-        return numVendas;
-    }
-
-    public void setNumVendas(int numVendas) {
-        this.numVendas = numVendas;
-    }
-
-    public int getNumero() {
-        return numero;
-    }
-
-    public void setNumero(int numero) {
-        this.numero = numero;
+        var soma = 0.0f;
+        for (int i = 0; i < livros.size(); i++) {
+            soma += livros.get(i).getPreco();
+            if (livros.get(i) instanceof Impresso){
+                soma += ((Impresso) livros.get(i)).getFrete();
+            }
+        }
+        this.valor = soma;
     }
 
     public String getCliente() {
@@ -63,8 +53,12 @@ public class Venda {
         this.valor += livro.getPreco();
     }
 
+    public List<Livro> getLivros() {
+        return livros;
+    }
+
     public void listarLivros() {
-        System.out.println("Livros da venda " + numero + ":");
+        System.out.println("Livros da venda " + id + ":");
         for (var livro : this.livros) { System.out.println(livro.toString()); }
     }
 
@@ -72,7 +66,6 @@ public class Venda {
     public String toString() {
         return "Venda{" +
                 "id: " + id +
-                ", Numero: " + numero +
                 ", Cliente: '" + cliente + '\'' +
                 ", Valor: " + valor +
                 ", Livros: " + livros +
