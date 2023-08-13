@@ -23,14 +23,13 @@ public class Eletronico extends Livro {
 
     @Override
     public String toString() {
-        return "Livro Eletrônico {" +
-                "Id: " + super.getId() +
-                ", Titulo: '" + super.getTitulo() + '\'' +
-                ", Autores: '" + super.getAutores() + '\'' +
-                ", Editora: '" + super.getEditora() + '\'' +
-                ", Preco: " + super.getPreco() + '\'' +
-                ", Tamanho: " + this.tamanho + "KB" +
-                '}';
+        return "\n #Livro Eletrônico#" +
+                "\nId: " + super.getId() +
+                "\nTitulo: " + super.getTitulo() +
+                "\nAutores: " + super.getAutores() +
+                "\nEditora: " + super.getEditora() +
+                "\nPreco: " + super.getPreco() +
+                "\nTamanho: " + this.tamanho + "KB";
 
     }
 }

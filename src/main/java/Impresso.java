@@ -37,15 +37,14 @@ public class Impresso extends Livro {
 
     @Override
     public String toString() {
-        return "Livro Impresso {" +
-                "Id: " + super.getId() +
-                ", Titulo: '" + super.getTitulo() + '\'' +
-                ", Autores: '" + super.getAutores() + '\'' +
-                ", Editora: '" + super.getEditora() + '\'' +
-                ", Preco: " + super.getPreco() + '\'' +
-                ", Frete: " + this.frete + '\'' +
-                ", Estoque: " + this.estoque+
-                '}';
+        return "\n #Livro Impresso#" +
+                "  \nId: " + super.getId() +
+                " \nTitulo: " + super.getTitulo() +
+                " \nAutores: " + super.getAutores() +
+                " \nEditora: " + super.getEditora() +
+                " \nPreco: " + super.getPreco() +
+                " \nFrete: " + this.frete +
+                " \nEstoque: " + this.estoque + "\n";
     }
 }
 

@@ -60,12 +60,11 @@ public abstract class Livro {
 
     @Override
     public String toString() {
-        return "Livro{" +
-                "id: " + id +
-                ", titulo: '" + titulo + '\'' +
-                ", autores: '" + autores + '\'' +
-                ", editora: '" + editora + '\'' +
-                ", preco: " + preco +
-                '}';
+        return "\n#Livro#\n" +
+                "\nid: " + id +
+                "\ntitulo: " + titulo +
+                "\nautores: " + autores +
+                "\neditora: " + editora +
+                "\npreco: " + preco;
     }
 }

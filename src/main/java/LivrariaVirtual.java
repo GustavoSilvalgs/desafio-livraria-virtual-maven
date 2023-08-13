@@ -285,7 +285,7 @@ public class LivrariaVirtual {
         int op;
 
         do {
-            System.out.println("*** MENU ***");
+            System.out.println("\n******** MENU ********\n");
             System.out.println("Escolha as opções abaixo: ");
             System.out.println("1 - Para cadastrar livro");
             System.out.println("2 - Para Realizar uma venda");
